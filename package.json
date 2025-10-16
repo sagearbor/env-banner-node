@@ -1,0 +1,27 @@
+{
+  "name": "env-banner-node",
+  "version": "0.1.0",
+  "description": "A universal environment banner for Node.js web frameworks.",
+  "main": "lib/middleware.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sagearbor/env-banner-node.git"
+  },
+  "keywords": [
+    "banner",
+    "environment",
+    "express",
+    "middleware",
+    "staging",
+    "dev"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sagearbor/env-banner-node/issues"
+  },
+  "homepage": "https://github.com/sagearbor/env-banner-node#readme"
+}
