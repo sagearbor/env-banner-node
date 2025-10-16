@@ -76,3 +76,133 @@ app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
 ```
+
+## Customization Options
+
+The `envBanner()` middleware accepts an optional configuration object with the following properties:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `text` | `string` | Auto-detected (e.g., "DEV", "STAGING") | Custom text to display in the banner |
+| `background` | `string` | Auto-detected (red for dev, amber for staging) | Custom background color (hex code) |
+| `color` | `string` | Auto-detected (white for dev, dark gray for staging) | Custom text color (hex code) |
+| `position` | `string` | `'top'` | Banner position: `'top'`, `'bottom'`, `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'`, or `'diagonal'` |
+| `showHost` | `boolean` | `true` | Whether to display the hostname and port (e.g., " • localhost:3000") |
+| `opacity` | `number` | `1.0` (bars/ribbons), `0.5` (diagonal) | Banner opacity from 0.0 (transparent) to 1.0 (fully opaque) |
+| `envVarName` | `string` | `'APP_ENV'` | Primary environment variable name to check |
+
+### Examples
+
+#### Custom Text Without Hostname
+
+```javascript
+app.use(envBanner({
+  text: "DON'T USE REAL DATA",
+  showHost: false
+}));
+// Result: "DON'T USE REAL DATA" (no hostname/port shown)
+```
+
+#### Custom Text with Colors
+
+```javascript
+app.use(envBanner({
+  text: "QA Environment - Test Data Only",
+  background: "#9333ea",  // purple
+  color: "#ffffff",       // white
+  position: "bottom"
+}));
+// Result: "QA Environment - Test Data Only • localhost:3000" at bottom
+```
+
+#### Corner Ribbon Positions
+
+Corner positions display the banner as a diagonal ribbon in the specified corner:
+
+```javascript
+// Top-right corner ribbon (default ribbon style)
+app.use(envBanner({
+  position: 'top-right',
+  text: "STAGING"
+}));
+
+// Top-left corner ribbon
+app.use(envBanner({
+  position: 'top-left'
+}));
+
+// Bottom-right corner ribbon
+app.use(envBanner({
+  position: 'bottom-right'
+}));
+
+// Bottom-left corner ribbon
+app.use(envBanner({
+  position: 'bottom-left'
+}));
+```
+
+#### Full Bar Positions
+
+Full-width bar positions span the entire width of the page:
+
+```javascript
+// Top bar (default)
+app.use(envBanner({
+  position: 'top'
+}));
+
+// Bottom bar
+app.use(envBanner({
+  position: 'bottom'
+}));
+```
+
+#### Diagonal Banner
+
+The diagonal position creates a full-page diagonal banner from bottom-left to top-right, perfect for highly visible warnings without blocking content:
+
+```javascript
+// Default diagonal (50% opacity, click-through enabled)
+app.use(envBanner({
+  position: 'diagonal',
+  text: "DON'T USE REAL DATA"
+}));
+
+// Custom opacity diagonal
+app.use(envBanner({
+  position: 'diagonal',
+  opacity: 0.3,  // 30% opaque (very subtle)
+  text: "DEVELOPMENT ENVIRONMENT"
+}));
+
+// More visible diagonal
+app.use(envBanner({
+  position: 'diagonal',
+  opacity: 0.7,  // 70% opaque
+  background: '#ef4444',
+  color: '#ffffff',
+  text: "STAGING - TEST DATA ONLY",
+  showHost: false
+}));
+```
+
+#### Transparency for Other Positions
+
+The `opacity` option works with all position styles:
+
+```javascript
+// Semi-transparent top bar
+app.use(envBanner({
+  position: 'top',
+  opacity: 0.8,
+  text: "DEV ENVIRONMENT"
+}));
+
+// Semi-transparent corner ribbon
+app.use(envBanner({
+  position: 'top-right',
+  opacity: 0.6,
+  text: "STAGING"
+}));
+```
