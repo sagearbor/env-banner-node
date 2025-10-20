@@ -10,21 +10,26 @@ const PORT = 3000;
 // Test different banner configurations
 // Uncomment the one you want to test:
 
-// 1. Diagonal banner (default dev environment)
+// 1. Diagonal banner - Top-Left to Bottom-Right (\)
 app.use(envBanner({ position: 'diagonal' }));
+// or explicitly:
+// app.use(envBanner({ position: 'diagonal-tlbr' }));
 
-// 2. Diagonal banner with custom opacity
+// 2. Diagonal banner - Bottom-Left to Top-Right (/)
+// app.use(envBanner({ position: 'diagonal-bltr' }));
+
+// 3. Diagonal with custom opacity
 // app.use(envBanner({ position: 'diagonal', opacity: 0.7 }));
 
-// 3. Top-right corner ribbon
+// 4. Top-right corner ribbon
 // app.use(envBanner({ position: 'top-right' }));
 
-// 4. Top bar (default)
+// 5. Top bar (default)
 // app.use(envBanner({ position: 'top' }));
 
-// 5. Custom text and colors
+// 6. Custom text and colors
 // app.use(envBanner({
-//   position: 'diagonal',
+//   position: 'diagonal-bltr',
 //   text: 'TESTING',
 //   background: '#9333ea',
 //   color: '#ffffff',
@@ -67,7 +72,8 @@ app.get('/', (req, res) => {
 
         <h3>Available Positions:</h3>
         <ul>
-          <li><code>diagonal</code> - Full-screen diagonal stripe</li>
+          <li><code>diagonal</code> or <code>diagonal-tlbr</code> - Diagonal stripe top-left to bottom-right (\)</li>
+          <li><code>diagonal-bltr</code> - Diagonal stripe bottom-left to top-right (/)</li>
           <li><code>top</code> - Top bar (default)</li>
           <li><code>bottom</code> - Bottom bar</li>
           <li><code>top-right</code> - Top-right corner ribbon</li>

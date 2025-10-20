@@ -48,15 +48,26 @@
   <h1>Diagonal Banner Test - Standalone HTML</h1>
 
   <div class="test-section">
-    <h2>Current Banner: <span id="current-config">80px diagonal stripe</span></h2>
+    <h2>Current Banner: <span id="current-config">80px diagonal stripe (TLBR \)</span></h2>
     <p>Use the buttons below to test different configurations:</p>
 
+    <h3>Direction:</h3>
     <div class="controls">
-      <button onclick="applyDiagonal(80, 0.5)">80px (Default)</button>
-      <button onclick="applyDiagonal(60, 0.5)">60px (Thin)</button>
-      <button onclick="applyDiagonal(100, 0.5)">100px (Bold)</button>
-      <button onclick="applyDiagonal(80, 0.3)">80px + Low Opacity</button>
-      <button onclick="applyDiagonal(80, 0.8)">80px + High Opacity</button>
+      <button onclick="applyDiagonal(80, 0.5, 45)">Top-Left to Bottom-Right (\)</button>
+      <button onclick="applyDiagonal(80, 0.5, -45)">Bottom-Left to Top-Right (/)</button>
+    </div>
+
+    <h3>Size & Opacity:</h3>
+    <div class="controls">
+      <button onclick="applyDiagonal(60, 0.5, 45)">60px (Thin)</button>
+      <button onclick="applyDiagonal(80, 0.5, 45)">80px (Default)</button>
+      <button onclick="applyDiagonal(100, 0.5, 45)">100px (Bold)</button>
+      <button onclick="applyDiagonal(80, 0.3, 45)">Low Opacity (0.3)</button>
+      <button onclick="applyDiagonal(80, 0.8, 45)">High Opacity (0.8)</button>
+    </div>
+
+    <h3>Comparison:</h3>
+    <div class="controls">
       <button onclick="applyBannerOld()">OLD (Broken - 10px padding)</button>
       <button onclick="removeBanner()">Remove Banner</button>
     </div>
@@ -65,14 +76,20 @@
   <div class="test-section">
     <h3>What to Look For:</h3>
     <ul>
-      <li><strong>Fixed version (80px):</strong> Thin diagonal stripe from bottom-left to top-right, text readable</li>
+      <li><strong>Top-Left to Bottom-Right (\):</strong> Uses <code>rotate(45deg)</code> - stripe goes from top-left to bottom-right</li>
+      <li><strong>Bottom-Left to Top-Right (/):</strong> Uses <code>rotate(-45deg)</code> - stripe goes from bottom-left to top-right</li>
+      <li><strong>Fixed version (80px):</strong> Thin diagonal stripe, text readable at any rotation</li>
       <li><strong>Old version (10px):</strong> Only shows a tiny red triangle in bottom-left corner</li>
-      <li><strong>Stripe positioning:</strong> Should go corner-to-corner diagonally at 45°</li>
-      <li><strong>Opacity tests:</strong> Banner should be semi-transparent, content visible beneath</li>
     </ul>
 
     <h3>Technical Details:</h3>
-    <p>The fix uses <code>height: 80px</code> for a thin stripe, positioned at center with <code>transform: translate(-50%, -50%) rotate(45deg)</code> and <code>width: 200vmax</code> to ensure it spans the full diagonal from corner to corner.</p>
+    <p>The fix uses <code>height: 80px</code> for a thin stripe, positioned at center with <code>transform: translate(-50%, -50%) rotate(±45deg)</code> and <code>width: 200vmax</code> to ensure it spans the full diagonal from corner to corner.</p>
+
+    <h3>Position Options:</h3>
+    <ul>
+      <li><code>position: 'diagonal'</code> or <code>'diagonal-tlbr'</code> - Top-left to bottom-right (\)</li>
+      <li><code>position: 'diagonal-bltr'</code> - Bottom-left to top-right (/)</li>
+    </ul>
   </div>
 
   <script>
@@ -86,7 +103,7 @@
       document.getElementById('current-config').textContent = 'None';
     }
 
-    function applyDiagonal(height, opacity) {
+    function applyDiagonal(height, opacity, rotation = 45) {
       removeBanner();
 
       const style = document.createElement('style');
@@ -98,7 +115,7 @@
           left: 50%;
           width: 200vmax;
           height: ${height}px;
-          transform: translate(-50%, -50%) rotate(45deg);
+          transform: translate(-50%, -50%) rotate(${rotation}deg);
           opacity: ${opacity};
           display: flex;
           align-items: center;
@@ -122,7 +139,8 @@
       banner.textContent = 'DEV • localhost';
       document.body.appendChild(banner);
 
-      document.getElementById('current-config').textContent = `${height}px diagonal stripe, opacity: ${opacity}`;
+      const direction = rotation === 45 ? 'TLBR \\' : 'BLTR /';
+      document.getElementById('current-config').textContent = `${height}px diagonal stripe (${direction}), opacity: ${opacity}`;
     }
 
     function applyBannerOld() {
@@ -165,8 +183,8 @@
       document.getElementById('current-config').textContent = 'OLD (10px padding) - BROKEN';
     }
 
-    // Apply default on load
-    applyDiagonal(80, 0.5);
+    // Apply default on load (TLBR \)
+    applyDiagonal(80, 0.5, 45);
   </script>
 </body>
 </html>
