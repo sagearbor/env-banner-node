@@ -19,12 +19,18 @@ This library is designed to be:
 ```
 env-banner-node/
 ├── lib/
-│   ├── core.js
-│   └── middleware.js
+│   ├── core.js         # Banner generation and styling logic
+│   └── middleware.js   # Express/Connect middleware
+├── test/               # Test files (not published to npm)
+│   ├── express-app.js
+│   ├── test-diagonal.html
+│   └── README.md
 ├── LICENSE
 ├── package.json
 └── README.md
 ```
+
+**Note:** The `test/` directory is excluded from npm packages via the `files` field in `package.json`.
 
 ## Installation
 
@@ -86,7 +92,7 @@ The `envBanner()` middleware accepts an optional configuration object with the f
 | `text` | `string` | Auto-detected (e.g., "DEV", "STAGING") | Custom text to display in the banner |
 | `background` | `string` | Auto-detected (red for dev, amber for staging) | Custom background color (hex code) |
 | `color` | `string` | Auto-detected (white for dev, dark gray for staging) | Custom text color (hex code) |
-| `position` | `string` | `'top'` | Banner position: `'top'`, `'bottom'`, `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'`, or `'diagonal'` |
+| `position` | `string` | `'bottom'` | Banner position: `'top'`, `'bottom'`, `'top-left'`, `'top-right'`, `'bottom-left'`, `'bottom-right'`, `'diagonal'` (or `'diagonal-bltr'`), `'diagonal-tlbr'` |
 | `showHost` | `boolean` | `true` | Whether to display the hostname and port (e.g., " • localhost:3000") |
 | `opacity` | `number` | `1.0` (bars/ribbons), `0.5` (diagonal) | Banner opacity from 0.0 (transparent) to 1.0 (fully opaque) |
 | `envVarName` | `string` | `'APP_ENV'` | Primary environment variable name to check |
@@ -147,26 +153,41 @@ app.use(envBanner({
 Full-width bar positions span the entire width of the page:
 
 ```javascript
-// Top bar (default)
-app.use(envBanner({
-  position: 'top'
-}));
-
-// Bottom bar
+// Bottom bar (default)
+app.use(envBanner());
+// or explicitly:
 app.use(envBanner({
   position: 'bottom'
+}));
+
+// Top bar
+app.use(envBanner({
+  position: 'top'
 }));
 ```
 
 #### Diagonal Banner
 
-The diagonal position creates a full-page diagonal banner from bottom-left to top-right, perfect for highly visible warnings without blocking content:
+The diagonal position creates a thin diagonal stripe across the viewport, perfect for highly visible warnings without blocking content. The banner is click-through enabled (`pointer-events: none`).
+
+Two diagonal directions are available:
 
 ```javascript
-// Default diagonal (50% opacity, click-through enabled)
+// Default diagonal: bottom-left to top-right (/)
 app.use(envBanner({
   position: 'diagonal',
   text: "DON'T USE REAL DATA"
+}));
+// or explicitly:
+app.use(envBanner({
+  position: 'diagonal-bltr',  // BLTR = Bottom-Left To Right
+  text: "DON'T USE REAL DATA"
+}));
+
+// Alternative direction: top-left to bottom-right (\)
+app.use(envBanner({
+  position: 'diagonal-tlbr',  // TLBR = Top-Left To Bottom-Right
+  text: "STAGING ENVIRONMENT"
 }));
 
 // Custom opacity diagonal
@@ -186,6 +207,10 @@ app.use(envBanner({
   showHost: false
 }));
 ```
+
+**Diagonal Positions:**
+- `'diagonal'` or `'diagonal-bltr'`: Bottom-left to top-right (/) - **default diagonal direction**
+- `'diagonal-tlbr'`: Top-left to bottom-right (\)
 
 #### Transparency for Other Positions
 
