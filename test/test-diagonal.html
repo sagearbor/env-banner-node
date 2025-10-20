@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagonal Banner Test</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    h1 { color: #1e40af; }
+    .test-section {
+      background: #f3f4f6;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    code {
+      background: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Diagonal Banner Test - Standalone HTML</h1>
+
+  <div class="test-section">
+    <h2>Current Banner: <span id="current-config">10vh (default fix)</span></h2>
+    <p>Use the buttons below to test different configurations:</p>
+
+    <div class="controls">
+      <button onclick="applyBanner('10vh', 0.5)">10vh (Default Fix)</button>
+      <button onclick="applyBanner('8vh', 0.5)">8vh (Subtle)</button>
+      <button onclick="applyBanner('12vh', 0.5)">12vh (Bold)</button>
+      <button onclick="applyBanner('15vh', 0.5)">15vh (Very Prominent)</button>
+      <button onclick="applyBanner('10vh', 0.3)">10vh + Low Opacity</button>
+      <button onclick="applyBanner('10vh', 0.8)">10vh + High Opacity</button>
+      <button onclick="applyBannerOld()">OLD (Broken - 10px padding)</button>
+      <button onclick="removeBanner()">Remove Banner</button>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h3>What to Look For:</h3>
+    <ul>
+      <li><strong>Fixed version (10vh):</strong> Should see a visible diagonal stripe across the viewport</li>
+      <li><strong>Old version (10px):</strong> Only shows a tiny red triangle in bottom-left corner</li>
+      <li><strong>Opacity tests:</strong> Banner should be semi-transparent, content visible beneath</li>
+    </ul>
+
+    <h3>Technical Details:</h3>
+    <p>The fix changes <code>padding: 10px 0;</code> to <code>height: 10vh;</code> which creates a properly sized diagonal band that scales with the viewport.</p>
+  </div>
+
+  <script>
+    function removeBanner() {
+      const existing = document.getElementById('env-banner-bar');
+      if (existing) existing.remove();
+
+      const existingStyle = document.getElementById('env-banner-style');
+      if (existingStyle) existingStyle.remove();
+
+      document.getElementById('current-config').textContent = 'None';
+    }
+
+    function applyBanner(height, opacity) {
+      removeBanner();
+
+      const style = document.createElement('style');
+      style.id = 'env-banner-style';
+      style.textContent = `
+        #env-banner-bar {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 200vw;
+          height: ${height};
+          padding: 0;
+          transform-origin: bottom left;
+          transform: rotate(45deg);
+          opacity: ${opacity};
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: system-ui, sans-serif;
+          font-size: 14px;
+          font-weight: 700;
+          z-index: 2147483647;
+          background: #ef4444;
+          color: #ffffff;
+          text-transform: uppercase;
+          box-shadow: 0 2px 4px rgba(0,0,0,.3);
+          pointer-events: none;
+        }
+      `;
+      document.head.appendChild(style);
+
+      const banner = document.createElement('div');
+      banner.id = 'env-banner-bar';
+      banner.setAttribute('role', 'status');
+      banner.textContent = 'DEV • localhost';
+      document.body.appendChild(banner);
+
+      document.getElementById('current-config').textContent = `${height}, opacity: ${opacity}`;
+    }
+
+    function applyBannerOld() {
+      removeBanner();
+
+      const style = document.createElement('style');
+      style.id = 'env-banner-style';
+      style.textContent = `
+        #env-banner-bar {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          width: 200vw;
+          padding: 10px 0;
+          transform-origin: bottom left;
+          transform: rotate(45deg);
+          opacity: 0.5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: system-ui, sans-serif;
+          font-size: 14px;
+          font-weight: 700;
+          z-index: 2147483647;
+          background: #ef4444;
+          color: #ffffff;
+          text-transform: uppercase;
+          box-shadow: 0 2px 4px rgba(0,0,0,.3);
+          pointer-events: none;
+        }
+      `;
+      document.head.appendChild(style);
+
+      const banner = document.createElement('div');
+      banner.id = 'env-banner-bar';
+      banner.setAttribute('role', 'status');
+      banner.textContent = 'DEV • localhost';
+      document.body.appendChild(banner);
+
+      document.getElementById('current-config').textContent = 'OLD (10px padding) - BROKEN';
+    }
+
+    // Apply default on load
+    applyBanner('10vh', 0.5);
+  </script>
+</body>
+</html>
