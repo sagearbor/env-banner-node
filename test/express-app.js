@@ -8,15 +8,15 @@ const app = express();
 const PORT = 3000;
 
 // Test different banner configurations
-// Uncomment the one you want to test:
+// Uncomment ONE of the following options, then restart the server (Ctrl+C and run again):
 
-// 1. Diagonal banner - Top-Left to Bottom-Right (\)
+// 1. Diagonal banner - Bottom-Left to Top-Right (/) - DEFAULT diagonal direction
 app.use(envBanner({ position: 'diagonal' }));
 // or explicitly:
-// app.use(envBanner({ position: 'diagonal-tlbr' }));
-
-// 2. Diagonal banner - Bottom-Left to Top-Right (/)
 // app.use(envBanner({ position: 'diagonal-bltr' }));
+
+// 2. Diagonal banner - Top-Left to Bottom-Right (\)
+// app.use(envBanner({ position: 'diagonal-tlbr' }));
 
 // 3. Diagonal with custom opacity
 // app.use(envBanner({ position: 'diagonal', opacity: 0.7 }));
@@ -24,17 +24,20 @@ app.use(envBanner({ position: 'diagonal' }));
 // 4. Top-right corner ribbon
 // app.use(envBanner({ position: 'top-right' }));
 
-// 5. Top bar (default)
+// 5. Top bar (default if no position specified)
 // app.use(envBanner({ position: 'top' }));
 
 // 6. Custom text and colors
 // app.use(envBanner({
-//   position: 'diagonal-bltr',
+//   position: 'diagonal',
 //   text: 'TESTING',
 //   background: '#9333ea',
 //   color: '#ffffff',
 //   opacity: 0.6
 // }));
+
+// 7. No banner - comment out ALL app.use(envBanner(...)) lines above
+//    IMPORTANT: You must restart the server (Ctrl+C, then run node test/express-app.js again)
 
 app.get('/', (req, res) => {
   res.send(`
@@ -72,15 +75,17 @@ app.get('/', (req, res) => {
 
         <h3>Available Positions:</h3>
         <ul>
-          <li><code>diagonal</code> or <code>diagonal-tlbr</code> - Diagonal stripe top-left to bottom-right (\)</li>
-          <li><code>diagonal-bltr</code> - Diagonal stripe bottom-left to top-right (/)</li>
-          <li><code>top</code> - Top bar (default)</li>
+          <li><code>diagonal</code> or <code>diagonal-bltr</code> - Diagonal stripe bottom-left to top-right (/) <strong>DEFAULT</strong></li>
+          <li><code>diagonal-tlbr</code> - Diagonal stripe top-left to bottom-right (\)</li>
+          <li><code>top</code> - Top bar</li>
           <li><code>bottom</code> - Bottom bar</li>
           <li><code>top-right</code> - Top-right corner ribbon</li>
           <li><code>top-left</code> - Top-left corner ribbon</li>
           <li><code>bottom-right</code> - Bottom-right corner ribbon</li>
           <li><code>bottom-left</code> - Bottom-left corner ribbon</li>
         </ul>
+
+        <p><strong>Note:</strong> After changing the configuration in <code>test/express-app.js</code>, you must restart the Node server (Ctrl+C, then run <code>node test/express-app.js</code> again).</p>
 
         <h3>Custom Options:</h3>
         <ul>
