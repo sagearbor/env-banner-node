@@ -48,16 +48,16 @@
   <h1>Diagonal Banner Test - Standalone HTML</h1>
 
   <div class="test-section">
-    <h2>Current Banner: <span id="current-config">10vh (default fix)</span></h2>
+    <h2>Current Banner: <span id="current-config">70vh (default fix)</span></h2>
     <p>Use the buttons below to test different configurations:</p>
 
     <div class="controls">
-      <button onclick="applyBanner('10vh', 0.5)">10vh (Default Fix)</button>
-      <button onclick="applyBanner('8vh', 0.5)">8vh (Subtle)</button>
-      <button onclick="applyBanner('12vh', 0.5)">12vh (Bold)</button>
-      <button onclick="applyBanner('15vh', 0.5)">15vh (Very Prominent)</button>
-      <button onclick="applyBanner('10vh', 0.3)">10vh + Low Opacity</button>
-      <button onclick="applyBanner('10vh', 0.8)">10vh + High Opacity</button>
+      <button onclick="applyBanner('70vh', 0.5)">70vh (Default Fix)</button>
+      <button onclick="applyBanner('50vh', 0.5)">50vh (Subtle)</button>
+      <button onclick="applyBanner('100vh', 0.5)">100vh (Very Prominent)</button>
+      <button onclick="applyBanner('70vh', 0.3)">70vh + Low Opacity</button>
+      <button onclick="applyBanner('70vh', 0.8)">70vh + High Opacity</button>
+      <button onclick="applyBanner('10vh', 0.5)">10vh (Too Small - Triangle)</button>
       <button onclick="applyBannerOld()">OLD (Broken - 10px padding)</button>
       <button onclick="removeBanner()">Remove Banner</button>
     </div>
@@ -66,13 +66,14 @@
   <div class="test-section">
     <h3>What to Look For:</h3>
     <ul>
-      <li><strong>Fixed version (10vh):</strong> Should see a visible diagonal stripe across the viewport</li>
+      <li><strong>Fixed version (70vh):</strong> Should see a visible diagonal stripe across the entire viewport</li>
       <li><strong>Old version (10px):</strong> Only shows a tiny red triangle in bottom-left corner</li>
+      <li><strong>Small values (10-15vh):</strong> Still show mostly just a triangle - too small</li>
       <li><strong>Opacity tests:</strong> Banner should be semi-transparent, content visible beneath</li>
     </ul>
 
     <h3>Technical Details:</h3>
-    <p>The fix changes <code>padding: 10px 0;</code> to <code>height: 10vh;</code> which creates a properly sized diagonal band that scales with the viewport.</p>
+    <p>The fix changes <code>padding: 10px 0;</code> to <code>height: 70vh;</code> which creates a properly sized diagonal band that scales with the viewport. When rotated 45° from bottom-left, you need a large height to span the full viewport diagonal.</p>
   </div>
 
   <script>
@@ -168,7 +169,7 @@
     }
 
     // Apply default on load
-    applyBanner('10vh', 0.5);
+    applyBanner('70vh', 0.5);
   </script>
 </body>
 </html>
