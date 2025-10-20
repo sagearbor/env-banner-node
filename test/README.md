@@ -22,9 +22,12 @@ Then open http://localhost:3000 in your browser.
 
 **Customize:**
 Edit the middleware configuration in `express-app.js` to test different banner options:
-- Different positions (diagonal, top, bottom, corners)
+- Different positions (bottom is default, or diagonal, top, corners)
 - Custom text, colors, and opacity
 - Show/hide hostname
+
+**Default behavior:**
+- If no position is specified, banner appears at the **bottom** of the page
 
 ### 2. `test-diagonal.html` - Standalone HTML Test
 

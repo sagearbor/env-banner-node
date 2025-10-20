@@ -24,8 +24,13 @@ app.use(envBanner({ position: 'diagonal' }));
 // 4. Top-right corner ribbon
 // app.use(envBanner({ position: 'top-right' }));
 
-// 5. Top bar (default if no position specified)
+// 5. Top bar
 // app.use(envBanner({ position: 'top' }));
+
+// 8. Bottom bar (DEFAULT if no position specified)
+// app.use(envBanner());  // No position = bottom bar by default
+// or explicitly:
+// app.use(envBanner({ position: 'bottom' }));
 
 // 6. Custom text and colors
 // app.use(envBanner({
@@ -75,10 +80,11 @@ app.get('/', (req, res) => {
 
         <h3>Available Positions:</h3>
         <ul>
-          <li><code>diagonal</code> or <code>diagonal-bltr</code> - Diagonal stripe bottom-left to top-right (/) <strong>DEFAULT</strong></li>
-          <li><code>diagonal-tlbr</code> - Diagonal stripe top-left to bottom-right (\)</li>
+          <li><strong>No position specified</strong> - Bottom bar <strong>(DEFAULT)</strong></li>
+          <li><code>bottom</code> - Bottom bar (same as default)</li>
           <li><code>top</code> - Top bar</li>
-          <li><code>bottom</code> - Bottom bar</li>
+          <li><code>diagonal</code> or <code>diagonal-bltr</code> - Diagonal stripe bottom-left to top-right (/)</li>
+          <li><code>diagonal-tlbr</code> - Diagonal stripe top-left to bottom-right (\)</li>
           <li><code>top-right</code> - Top-right corner ribbon</li>
           <li><code>top-left</code> - Top-left corner ribbon</li>
           <li><code>bottom-right</code> - Bottom-right corner ribbon</li>
