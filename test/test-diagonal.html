@@ -48,16 +48,15 @@
   <h1>Diagonal Banner Test - Standalone HTML</h1>
 
   <div class="test-section">
-    <h2>Current Banner: <span id="current-config">70vh (default fix)</span></h2>
+    <h2>Current Banner: <span id="current-config">80px diagonal stripe</span></h2>
     <p>Use the buttons below to test different configurations:</p>
 
     <div class="controls">
-      <button onclick="applyBanner('70vh', 0.5)">70vh (Default Fix)</button>
-      <button onclick="applyBanner('50vh', 0.5)">50vh (Subtle)</button>
-      <button onclick="applyBanner('100vh', 0.5)">100vh (Very Prominent)</button>
-      <button onclick="applyBanner('70vh', 0.3)">70vh + Low Opacity</button>
-      <button onclick="applyBanner('70vh', 0.8)">70vh + High Opacity</button>
-      <button onclick="applyBanner('10vh', 0.5)">10vh (Too Small - Triangle)</button>
+      <button onclick="applyDiagonal(80, 0.5)">80px (Default)</button>
+      <button onclick="applyDiagonal(60, 0.5)">60px (Thin)</button>
+      <button onclick="applyDiagonal(100, 0.5)">100px (Bold)</button>
+      <button onclick="applyDiagonal(80, 0.3)">80px + Low Opacity</button>
+      <button onclick="applyDiagonal(80, 0.8)">80px + High Opacity</button>
       <button onclick="applyBannerOld()">OLD (Broken - 10px padding)</button>
       <button onclick="removeBanner()">Remove Banner</button>
     </div>
@@ -66,14 +65,14 @@
   <div class="test-section">
     <h3>What to Look For:</h3>
     <ul>
-      <li><strong>Fixed version (70vh):</strong> Should see a visible diagonal stripe across the entire viewport</li>
+      <li><strong>Fixed version (80px):</strong> Thin diagonal stripe from bottom-left to top-right, text readable</li>
       <li><strong>Old version (10px):</strong> Only shows a tiny red triangle in bottom-left corner</li>
-      <li><strong>Small values (10-15vh):</strong> Still show mostly just a triangle - too small</li>
+      <li><strong>Stripe positioning:</strong> Should go corner-to-corner diagonally at 45°</li>
       <li><strong>Opacity tests:</strong> Banner should be semi-transparent, content visible beneath</li>
     </ul>
 
     <h3>Technical Details:</h3>
-    <p>The fix changes <code>padding: 10px 0;</code> to <code>height: 70vh;</code> which creates a properly sized diagonal band that scales with the viewport. When rotated 45° from bottom-left, you need a large height to span the full viewport diagonal.</p>
+    <p>The fix uses <code>height: 80px</code> for a thin stripe, positioned at center with <code>transform: translate(-50%, -50%) rotate(45deg)</code> and <code>width: 200vmax</code> to ensure it spans the full diagonal from corner to corner.</p>
   </div>
 
   <script>
@@ -87,7 +86,7 @@
       document.getElementById('current-config').textContent = 'None';
     }
 
-    function applyBanner(height, opacity) {
+    function applyDiagonal(height, opacity) {
       removeBanner();
 
       const style = document.createElement('style');
@@ -95,13 +94,11 @@
       style.textContent = `
         #env-banner-bar {
           position: fixed;
-          bottom: 0;
-          left: 0;
-          width: 200vw;
-          height: ${height};
-          padding: 0;
-          transform-origin: bottom left;
-          transform: rotate(45deg);
+          top: 50%;
+          left: 50%;
+          width: 200vmax;
+          height: ${height}px;
+          transform: translate(-50%, -50%) rotate(45deg);
           opacity: ${opacity};
           display: flex;
           align-items: center;
@@ -125,7 +122,7 @@
       banner.textContent = 'DEV • localhost';
       document.body.appendChild(banner);
 
-      document.getElementById('current-config').textContent = `${height}, opacity: ${opacity}`;
+      document.getElementById('current-config').textContent = `${height}px diagonal stripe, opacity: ${opacity}`;
     }
 
     function applyBannerOld() {
@@ -169,7 +166,7 @@
     }
 
     // Apply default on load
-    applyBanner('70vh', 0.5);
+    applyDiagonal(80, 0.5);
   </script>
 </body>
 </html>
